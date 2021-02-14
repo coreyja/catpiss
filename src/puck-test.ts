@@ -4,14 +4,27 @@ declare const LED3: Pin
 
 declare const BTN: Pin
 
-setWatch(function() { LED1.write(!LED1.read()) }, BTN, { edge: 'rising', debounce: 50, repeat: true })
+const LEDS = [LED1, LED2, LED3];
 
-LED1.set()
-LED2.set()
-LED3.set()
+const blinkAll = () => {
+  LEDS.forEach(led => led.set())
+  LEDS.forEach(led => led.reset())
+}
 
-LED1.reset()
-LED2.reset()
-LED3.reset()
+// Basically a wrapper to hide my `any` cast as much as possible
+// This method isn't in the type definitions
+const setNfcUrl = (url: string) => {
+  (NRF as any).nfcURL(url);
+}
 
-console.log('Loaded code')
+const onButton = () => {
+  const whenPressed = Date.now();
+  LED1.set();
+  setNfcUrl(`https://coreyja.com?now=${whenPressed.toString()}`);
+
+  setTimeout(() => { LED1.reset() }, 5000)
+}
+
+setWatch(onButton, BTN, { edge: 'rising', debounce: 50, repeat: true })
+
+blinkAll()

@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build": "yarn run tsc",
-    "deploy": "yarn run espruino -p df-61-c7-f5-63-9b dist/puck-test.js"
+    "deploy": "yarn run espruino -p df-61-c7-f5-63-9b dist/puck-test.js",
+    "connect": "yarn run espruino -p df-61-c7-f5-63-9b"
   },
   "dependencies": {
     "@types/espruino": "^1.94.3",
