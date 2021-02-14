@@ -16,8 +16,7 @@ module.exports = {
   ],
   optimize: {
     /* Example: Bundle your final build: */
-    bundle: true,
-    minify: true,
+    "bundle": true,
   },
   packageOptions: {
     /* ... */
@@ -27,6 +26,5 @@ module.exports = {
   },
   buildOptions: {
     /* ... */
-    sourcemap: true,
   },
 };
