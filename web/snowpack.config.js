@@ -27,4 +27,8 @@ module.exports = {
   buildOptions: {
     /* ... */
   },
+  alias: {
+    "react": "preact/compat",
+    "react-dom": "preact/compat"
+  },
 };
