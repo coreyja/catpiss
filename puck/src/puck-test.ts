@@ -54,20 +54,56 @@ const onClick = (callback: () => void) => {
   setWatch(callback, BTN, { edge: "rising", repeat: true });
 };
 
-//// BUSINESS LOGIC
-blinkAll();
+const toQueryString = (obj: Record<string, unknown>): string =>
+  "?" +
+  Object.keys(obj)
+    .map((key) => `${key}=${obj[key]}`)
+    .join("&");
 
+//// BUSINESS LOGIC
+const BASE_URL = "https://catpiss.coreyja.com";
+
+const batteryCache = {
+  value: (E as any).getBattery(),
+  cachedAt: new Date(),
+};
+
+const updateBatteryCache = () => {
+  batteryCache.value = (E as any).getBattery();
+  batteryCache.cachedAt = new Date();
+};
+
+const catpissCache: { lastCleanedAt?: Date } = {
+  lastCleanedAt: undefined,
+};
+const cleanedCatPiss = () => {
+  catpissCache.lastCleanedAt = new Date();
+};
+
+const updateNfcUrl = () => {
+  updateBatteryCache();
+  const queryString = toQueryString({
+    battery_level: batteryCache.value,
+    battery_level_cached_at: batteryCache.cachedAt.toISOString(),
+    catpiss_last_cleaned_at: catpissCache.lastCleanedAt?.toISOString(),
+  });
+  setNfcUrl(`${BASE_URL}${queryString}`);
+};
+
+// Setup Callbacks
 onLongPress(() => {
   console.log("Long Press Achieved");
   blinkLed(GREEN_LED, 300);
+  cleanedCatPiss();
+  updateNfcUrl();
 });
-
-onLongPress(() => {
-  console.log("SUPPER Long Press Achieved");
-  blinkLed(BLUE_LED, 300);
-}, 3000);
 
 onClick(() => {
   console.log("Short press");
   blinkLed(RED_LED, 300);
+  updateNfcUrl();
 });
+
+// After boot
+updateNfcUrl();
+blinkAll();
