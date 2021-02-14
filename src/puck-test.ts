@@ -55,7 +55,6 @@ const onClick = (callback: () => void) => {
 };
 
 //// BUSINESS LOGIC
-
 blinkAll();
 
 onLongPress(() => {
@@ -63,8 +62,12 @@ onLongPress(() => {
   blinkLed(GREEN_LED, 300);
 });
 
+onLongPress(() => {
+  console.log("SUPPER Long Press Achieved");
+  blinkLed(BLUE_LED, 300);
+}, 3000);
+
 onClick(() => {
   console.log("Short press");
-
   blinkLed(RED_LED, 300);
 });
