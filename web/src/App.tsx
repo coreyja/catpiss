@@ -1,13 +1,7 @@
 import { h, FunctionComponent } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
-import { useLocation } from 'react-router-dom';
 import logo from './logo.png';
-
-const Code: FunctionComponent = (props) => (
-  <code className="px-2 py-1 bg-gray-600">
-    {props.children}
-  </code>
-)
+import blackCat from './pexels-helena-lopes-1931367.jpg';
 
 function App() {
   // Create the count state.
@@ -18,36 +12,26 @@ function App() {
     return () => clearTimeout(timer);
   }, [count, setCount]);
 
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+  const searchParams = new URLSearchParams(window.location.search);
   const searchEntries = [...searchParams.entries()];
 
   // Return the App component.
   return (
-    <div className="text-center App">
+    <div className="text-center">
       <header className="flex flex-col items-center justify-center min-h-screen text-3xl text-white bg-gray-800">
-        <img src={logo} className="mb-12 pointer-events-none h-52 animate-pulse" alt="logo" />
+        <figure className="mb-16">
+          <img src={blackCat} className="h-72" alt="Black cat in flower pot" />
+          <figcaption className="text-xs">
+            Photo by <a href="https://www.pexels.com/@wildlittlethingsphoto" target="_blank" className="underline">Helena Lopes</a> from Pexels
+          </figcaption>
+        </figure>
+
+
         {searchEntries.map(([key, value]) => (
           <p>
             {key}: {value}
           </p>
         ))}
-        <p className='p-2'>
-          Edit <Code>src/App.jsx</Code> and save to reload.
-        </p>
-        <p className='p-2'>
-          Page has been open for <Code>{count}</Code> seconds.
-        </p>
-        <p className='p-2'>
-          <a
-            className="text-blue-500"
-            href="https://preactjs.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Preact
-          </a>
-        </p>
       </header>
     </div>
   );
