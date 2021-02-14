@@ -3,15 +3,25 @@ declare const LED1: Pin;
 declare const LED2: Pin;
 declare const LED3: Pin;
 
+const RED_LED = LED1;
+const GREEN_LED = LED2;
+const BLUE_LED = LED3;
+
 declare const BTN: Pin;
 
 const LEDS = [LED1, LED2, LED3];
 
 //// UTILITIES
 
+const blinkLed = (led: Pin, duration = 100) => {
+  led.set();
+  setTimeout(() => {
+    led.reset();
+  }, duration);
+};
+
 const blinkAll = () => {
-  LEDS.forEach((led) => led.set());
-  LEDS.forEach((led) => led.reset());
+  LEDS.forEach(blinkLed);
 };
 
 // Basically a wrapper to hide my `any` cast as much as possible
@@ -40,24 +50,21 @@ const onLongPress = (callback: () => void, longPressDuration = 2000) => {
   );
 };
 
+const onClick = (callback: () => void) => {
+  setWatch(callback, BTN, { edge: "rising", repeat: true });
+};
+
 //// BUSINESS LOGIC
 
-// const onButton = () => {
-//   const whenPressed = Date.now();
-//   LED1.set();
-//   setNfcUrl(`https://coreyja.com?now=${whenPressed.toString()}`);
-
-//   setTimeout(() => { LED1.reset() }, 5000)
-// }
-
-// setWatch(onButton, BTN, { edge: 'rising', debounce: 50, repeat: true })
+blinkAll();
 
 onLongPress(() => {
   console.log("Long Press Achieved");
-  LED3.set();
-  setTimeout(() => {
-    LED3.reset();
-  }, 300);
-}, 2000);
+  blinkLed(GREEN_LED, 300);
+});
 
-blinkAll();
+onClick(() => {
+  console.log("Short press");
+
+  blinkLed(RED_LED, 300);
+});
