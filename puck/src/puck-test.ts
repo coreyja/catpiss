@@ -13,7 +13,7 @@ const LEDS = [LED1, LED2, LED3];
 
 //// UTILITIES
 
-const blinkLed = (led: Pin, duration = 100) => {
+const blinkLed = (led: Pin, duration = 300) => {
   led.set();
   setTimeout(() => {
     led.reset();
@@ -90,6 +90,58 @@ const updateNfcUrl = () => {
   setNfcUrl(`${BASE_URL}${queryString}`);
 };
 
+enum CatpissStatus {
+  NoCleaningNeeded,
+  CouldBeCleaned,
+  CleaningNeeded,
+  CleaningNeededBadly,
+}
+
+const determineCatpissStatus = (): CatpissStatus => {
+  if (!catpissCache.lastCleanedAt) {
+    return CatpissStatus.CleaningNeeded;
+  }
+
+  const millisecondsSinceCleaning =
+    new Date().valueOf() - catpissCache.lastCleanedAt.valueOf();
+  const hoursSinceCleaning = millisecondsSinceCleaning / 1000 / 60 / 60;
+
+  if (hoursSinceCleaning < 24) {
+    return CatpissStatus.NoCleaningNeeded;
+  } else if (hoursSinceCleaning < 48) {
+    return CatpissStatus.CouldBeCleaned;
+  } else if (hoursSinceCleaning < 72) {
+    return CatpissStatus.CleaningNeeded;
+  } else {
+    return CatpissStatus.CleaningNeededBadly;
+  }
+};
+
+const blinkCatpissStatus = () => {
+  const catpissStatus = determineCatpissStatus();
+
+  switch (catpissStatus) {
+    case CatpissStatus.NoCleaningNeeded:
+      blinkLed(GREEN_LED, 300);
+      break;
+    case CatpissStatus.CouldBeCleaned:
+      blinkLed(BLUE_LED, 300);
+      break;
+    case CatpissStatus.CleaningNeeded:
+      blinkLed(RED_LED, 300);
+      break;
+    case CatpissStatus.CleaningNeededBadly:
+      blinkLed(RED_LED, 300);
+      setTimeout(() => {
+        blinkLed(RED_LED, 300);
+      }, 300);
+      break;
+    default:
+      const e: never = catpissStatus;
+      throw new Error(`Status was unexpected how did we get here?: ${e}`);
+  }
+};
+
 // Setup Callbacks
 onLongPress(() => {
   console.log("Long Press Achieved");
@@ -100,7 +152,7 @@ onLongPress(() => {
 
 onClick(() => {
   console.log("Short press");
-  blinkLed(RED_LED, 300);
+  blinkCatpissStatus();
   updateNfcUrl();
 });
 
