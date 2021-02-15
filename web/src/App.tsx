@@ -22,7 +22,7 @@ function App() {
 
   // Return the App component.
   return (
-    <div className="max-w-md min-h-screen m-auto text-center text-white">
+    <div className="flex flex-col max-w-md min-h-screen m-auto text-center text-white">
       <header className="flex flex-col items-center justify-center pt-8 pb-2">
         <h1 className="mb-8 text-6xl text-white font-cool">Catpiss</h1>
         <figure>
