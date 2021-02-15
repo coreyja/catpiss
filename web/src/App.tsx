@@ -14,16 +14,16 @@ const timeAgoInWords = (timeInPast: Date): string => {
   if (diffMillis < 1000) { return "just now" }
 
   const diffSeconds = diffMillis / 1000;
-  if (diffSeconds < 60) { return `${diffSeconds.toPrecision(1)} seconds ago` }
+  if (diffSeconds < 60) { return `${Math.round(diffSeconds)} seconds ago` }
 
   const diffMinutes = diffSeconds / 60;
-  if (diffMinutes < 60) { return `${diffMinutes.toPrecision(1)} minutes ago` }
+  if (diffMinutes < 60) { return `${Math.round(diffMinutes)} minutes ago` }
 
   const diffHours = diffMinutes / 60;
-  if (diffHours < 24) { return `${diffHours.toPrecision(1)} hours ago` }
+  if (diffHours < 24) { return `${Math.round(diffHours)} hours ago` }
 
   const diffDays = diffHours / 24
-  return `${diffDays.toPrecision(1)} days and ${diffHours.toPrecision(1)} hours`
+  return `${Math.round(diffDays)} days and ${Math.round(diffHours)} hours`
 }
 
 const backgroundColorClassForBatteryLevel = (level: number) => {
