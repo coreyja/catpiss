@@ -8,6 +8,24 @@ interface BatteryProps {
   batteryInfo?: {batteryLevel: number, batteryCachedAt: Date}
 }
 
+const timeAgoInWords = (timeInPast: Date): string => {
+  const diffMillis = new Date().valueOf() - timeInPast.valueOf();
+
+  if (diffMillis < 1000) { return "just now" }
+
+  const diffSeconds = diffMillis / 1000;
+  if (diffSeconds < 60) { return `${diffSeconds.toPrecision(1)} seconds ago` }
+
+  const diffMinutes = diffSeconds / 60;
+  if (diffMinutes < 60) { return `${diffMinutes.toPrecision(1)} minutes ago` }
+
+  const diffHours = diffMinutes / 60;
+  if (diffHours < 24) { return `${diffHours.toPrecision(1)} hours ago` }
+
+  const diffDays = diffHours / 24
+  return `${diffDays.toPrecision(1)} days and ${diffHours.toPrecision(1)} hours`
+}
+
 const backgroundColorClassForBatteryLevel = (level: number) => {
   if (level > 50) {
     return 'bg-green-500';
@@ -41,7 +59,7 @@ const Battery: FunctionComponent<BatteryProps> = ({batteryInfo}) => {
       </div>
 
       <div>
-        As of {batteryCachedAtAgoHours.toPrecision(1)} hour(s) ago
+        As of {timeAgoInWords(batteryInfo.batteryCachedAt)}
       </div>
     </div>
   )
