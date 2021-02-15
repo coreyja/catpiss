@@ -76,6 +76,9 @@ function App() {
 
   const batteryInfo = batteryLevel && batteryCachedAt ? { batteryLevel, batteryCachedAt } : undefined
 
+  const catpissLastCleanedAtString = searchParams.get('catpiss_last_cleaned_at');
+  const catpissLastCleanedAt = catpissLastCleanedAtString && new Date(catpissLastCleanedAtString);
+
   // Return the App component.
   return (
     <div className="min-h-screen text-center text-white bg-gray-800">
@@ -90,6 +93,8 @@ function App() {
       </header>
 
       <Battery batteryInfo={batteryInfo} />
+
+      {catpissLastCleanedAt && <div>Catpiss was last cleaned {timeAgoInWords(catpissLastCleanedAt)}</div>}
     </div>
   );
 }
