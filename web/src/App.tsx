@@ -18,9 +18,10 @@ function App() {
   // Return the App component.
   return (
     <div className="text-center">
-      <header className="flex flex-col items-center justify-center min-h-screen text-3xl text-white bg-gray-800">
+      <header className="flex flex-col items-center justify-center min-h-screen text-white bg-gray-800">
+        <h1 className="mb-8 text-4xl text-white">Catpiss</h1>
         <figure className="mb-16">
-          <img src={blackCat} className="h-72" alt="Black cat in flower pot" />
+          <img src={blackCat} className="mb-2 h-72" alt="Black cat in flower pot" />
           <figcaption className="text-xs">
             Photo by <a href="https://www.pexels.com/@wildlittlethingsphoto" target="_blank" className="underline">Helena Lopes</a> from Pexels
           </figcaption>
