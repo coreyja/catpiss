@@ -14,7 +14,7 @@ const timeAgoInWords = (timeInPast: Date): string => {
   if (diffHours < 24) { return `${Math.round(diffHours)} hours ago` }
 
   const diffDays = diffHours / 24
-  return `${Math.round(diffDays)} days and ${Math.round(diffHours)} hours`
+  return `${Math.round(diffDays)} days and ${Math.round(diffHours) % 24} hours`
 }
 
 export { timeAgoInWords }
